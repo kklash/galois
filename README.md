@@ -1,6 +1,6 @@
 # galois
 
-Implements finite fields of order 2^m up to 2^32 using polynomials.
+Implements finite fields of order $2^m$ up to $2^{32}$ using polynomials.
 
 ## Finite Fields
 
@@ -51,6 +51,7 @@ This `field` can then be used to perform operations on `uint16` symbols:
 
 ```go
 field.Mul(0x1234, 0x4567) // 0x6324
+field.Div(0x6324, 0x1234) // 0x4567
 ```
 
 Note that the choice of prime polynomial matters very much for compatibility between implementations. Even if two different prime polynomials share the same degree, and thus generate finite fields of the same order, the results of arithmetic operations within their respective fields will be different.
