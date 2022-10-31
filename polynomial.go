@@ -124,7 +124,7 @@ func (numerator Polynomial) Mod(denominator Polynomial) Polynomial {
 // If modulus is the empty Polynomial (zero), no modular arithmetic is performed.
 func (base Polynomial) Exp(exponent uint64, modulus Polynomial) Polynomial {
 	if exponent == 0 {
-		return MultIdentity
+		return 1
 	}
 	result := base
 

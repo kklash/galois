@@ -102,6 +102,12 @@ func TestPolonomial_Div(t *testing.T) {
 			Quotient:    0b10101,
 			Remainder:   0b0000011000011,
 		},
+		{
+			Numerator:   0b011111111,
+			Denominator: 0b100011101,
+			Quotient:    0,
+			Remainder:   0b011111111,
+		},
 	}
 
 	for _, test := range testCases {

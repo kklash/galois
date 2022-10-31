@@ -202,7 +202,7 @@ func TestPrimes(t *testing.T) {
 		if degree := test.PrimePolynomial.Degree(); degree != test.Degree {
 			t.Errorf("polynomial did not return expected degree; wanted %d, got %d", test.Degree, degree)
 		}
-		if order := FieldOrder(test.PrimePolynomial); order != test.Order {
+		if order := fieldOrder(test.PrimePolynomial); order != test.Order {
 			t.Errorf("polynomial did not return expected order; wanted %d, got %d", test.Order, order)
 		}
 	}

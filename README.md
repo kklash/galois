@@ -29,6 +29,28 @@ If we have need of a finite number system to keep numbers bounded to within the 
 
 ## Polynomials
 
-This library uses polynomials modulo prime polynomials (instead of integers modulo prime integers) to construct finite fields which have non-prime order. This allows you to define cyclic multiplication and division within fixed-bit-size symbols, ensuring the outputs of the operation do not overflow the maximum symbol size.
+This library uses [polynomials modulo prime polynomials](https://en.wikipedia.org/wiki/Finite_field#Non-prime_fields) (instead of integers modulo prime integers) to construct finite fields which have non-prime order. This allows you to define cyclic multiplication and division within fixed-bit-size symbols, ensuring the outputs of the operation do not overflow the maximum symbol size.
 
-For example, this library can be used to perform byte-wise multiplication and division, where the output of every operation is also a byte, while the normal laws of algebra still apply. See [`gf256_example_test.go`](./gf256_example_test.go) to see an example.
+For example, this library can be used to perform byte-wise multiplication and division, where the output of every operation is also a byte, while the normal laws of algebra still apply. See [`example_test.go`](./example_test.go) to see an example.
+
+# Usage
+
+First, decide how many elements you need in your finite field. This library allows callers to create finite fields of size $2^m$, where $2 <= m <= 32$.
+
+Based on this, pick an irreducible _prime polynomial_ whose degree is $m$. For example, if you need to do finite field arithmetic on 16-bit symbols, use a polynomial of degree 16. For convenience, this library comes pre-packaged with [a set of prime polynomials](./primes.go), which were sourced from https://www.partow.net/programming/polynomials/index.html. A prime polynomial of degree 16 is exported as `galois.PrimePolynomialDegree16`.
+
+Next, instantiate a `galois.Field[T]`:
+
+```go
+field := galois.NewField[uint16](galois.PrimePolynomialDegree16)
+```
+
+The type parameter `T` on `galois.Field[T]` selects the size of unsigned integer which will represent the elements of the field in the interface of `galois.Field[T]`. Note that this doesn't affect the speed of internal operations, only the API of `galois.Field[T]`. Internally, `galois.Field[T]` always uses `uint64` to represent polynomials when performing mathematical operations.
+
+This `field` can then be used to perform operations on `uint16` symbols:
+
+```go
+field.Mul(0x1234, 0x4567) // 0x6324
+```
+
+Note that the choice of prime polynomial matters very much for compatibility between implementations. Even if two different prime polynomials share the same degree, and thus generate finite fields of the same order, the results of arithmetic operations within their respective fields will be different.
