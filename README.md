@@ -45,7 +45,7 @@ Next, instantiate a `galois.Field[T]`:
 field := galois.NewField[uint16](galois.PrimePolynomialDegree16)
 ```
 
-The type parameter `T` on `galois.Field[T]` selects the size of unsigned integer which will represent the elements of the field in the interface of `galois.Field[T]`. Note that this doesn't affect the speed of internal operations, only the API of `galois.Field[T]`. Internally, `galois.Field[T]` always uses `uint64` to represent polynomials when performing mathematical operations.
+The type parameter `T` on `galois.Field[T]` selects the type of integer which will represent the elements of the field in the interface of `galois.Field[T]`. Note that this doesn't affect the speed of internal operations, only the API of `galois.Field[T]`. Internally, `galois.Field[T]` always uses `uint64` to represent polynomials when performing mathematical operations.
 
 This `field` can then be used to perform operations on `uint16` symbols:
 
