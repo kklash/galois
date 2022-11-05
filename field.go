@@ -68,6 +68,14 @@ func (field *Field[T]) Add(values ...T) (sum T) {
 	return
 }
 
+// Sub computes the difference of the given elements (a - b) within the finite field.
+//
+// Note that addition and subtraction within a Field is the same, because
+// addition consists of adding polynomials with coefficients modulo two.
+func (field *Field[T]) Sub(a, b T) T {
+	return a ^ b
+}
+
 // Mul multiplies a set of field field elements and returns the product. If called with no
 // parameters, Mul returns zero.
 //
