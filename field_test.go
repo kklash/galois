@@ -117,19 +117,19 @@ func TestField_Exp(t *testing.T) {
 		},
 		{
 			Base:     0b1011,
-			Exponent: fieldOrder(PrimePolynomialDegree4),
+			Exponent: fieldOrder(PrimePolynomialDegree4) - 1,
 			Modulus:  PrimePolynomialDegree4,
 			Expected: 0b1,
 		},
 		{
 			Base:     0b1011,
-			Exponent: fieldOrder(PrimePolynomialDegree4) + 1,
+			Exponent: fieldOrder(PrimePolynomialDegree4),
 			Modulus:  PrimePolynomialDegree4,
 			Expected: 0b1011,
 		},
 		{
 			Base:     0b10011,
-			Exponent: fieldOrder(PrimePolynomialDegree5) + 1,
+			Exponent: fieldOrder(PrimePolynomialDegree5),
 			Modulus:  PrimePolynomialDegree5,
 			Expected: 0b10011,
 		},
@@ -209,7 +209,7 @@ func TestField_Mul(t *testing.T) {
 		elementA := field.Generate(test.ExponentA)
 		elementB := field.Generate(test.ExponentB)
 
-		expectedExponent := (test.ExponentA + test.ExponentB) % field.Order()
+		expectedExponent := (test.ExponentA + test.ExponentB) % (field.Order() - 1)
 		expectedElement := field.Generate(expectedExponent)
 
 		if product := field.Mul(elementA, elementB); product != expectedElement {
@@ -244,7 +244,7 @@ func TestField_UniqueInverse(t *testing.T) {
 		field := NewField[Polynomial](prime)
 		seen := make(map[Polynomial]uint64)
 
-		for index := uint64(0); index < field.Order(); index++ {
+		for index := uint64(0); index < field.Order()-1; index++ {
 			poly := field.Generate(index)
 			if otherIndex, ok := seen[poly]; ok {
 				t.Errorf(
@@ -351,7 +351,7 @@ func BenchmarkField_Exp_32(b *testing.B) {
 	field := NewField[uint32](PrimePolynomialDegree32)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		field.Exp(0b10101010101010101010101010101010, field.Order()-1)
+		field.Exp(0b10101010101010101010101010101010, field.Order()-2)
 	}
 }
 

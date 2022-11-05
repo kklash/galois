@@ -30,7 +30,7 @@ type Field[T IntLike] struct {
 // element in the field.
 func NewField[T IntLike](prime Polynomial) *Field[T] {
 	maxTypeValue := getMaxTypeValue[T]()
-	if fieldOrder(prime)-1 > maxTypeValue {
+	if maxTypeValue < fieldOrder(prime)-1 {
 		panic(
 			fmt.Sprintf(
 				"cannot use %T to represent elements of GF(2^%d); max type value %d is too small",
@@ -53,7 +53,7 @@ func (field *Field[T]) Order() uint64 {
 // If the exponent is larger than the field order, the exponent is reduced modulo
 // that order.
 func (field *Field[T]) Generate(exponent uint64) T {
-	exponent %= field.Order()
+	exponent %= (field.Order() - 1)
 	return T(Generator.Exp(exponent, field.Prime))
 }
 
@@ -156,7 +156,7 @@ func (field *Field[T]) Exp(base T, exponent uint64) T {
 		return 1
 	}
 
-	exponent %= field.Order()
+	exponent %= (field.Order() - 1)
 	residue := Polynomial(base).Exp(exponent, field.Prime)
 	return T(residue)
 }
